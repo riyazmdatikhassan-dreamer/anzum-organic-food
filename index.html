@@ -1,124 +1,465 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Product Website</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-    }
-    header {
-      background: #0d6efd;
-      color: white;
-      padding: 20px;
-      text-align: center;
-    }
-    nav {
-      padding: 10px;
-      text-align: center;
-    }
-    nav a {
-      margin: 0 15px;
-      text-decoration: none;
-      color: #333;
-      font-weight: bold;
-    }
-    .hero {
-      background: url('https://picsum.photos/1200/400') no-repeat center center/cover;
-      color: white;
-      text-align: center;
-      padding: 80px 20px;
-    }
-    .hero h1 {
-      font-size: 50px;
-    }
-    .products {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      padding: 20px;
-    }
-    .product-card {
-      border: 1px solid #ddd;
-      border-radius: 10px;
-      width: 250px;
-      margin: 15px;
-      text-align: center;
-      padding: 15px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
-    .product-card img {
-      max-width: 100%;
-      border-radius: 10px;
-    }
-    .product-card h3 {
-      margin: 10px 0;
-    }
-    .btn {
-      display: inline-block;
-      background: #0d6efd;
-      color: white;
-      padding: 10px 15px;
-      border-radius: 5px;
-      text-decoration: none;
-    }
-    footer {
-      background: #333;
-      color: white;
-      text-align: center;
-      padding: 15px;
-      margin-top: 20px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anjum Organic Food</title>
+    <!-- Font Awesome for Social Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: #f4f6f9;
+            color: #333;
+        }
+
+        /* Navbar */
+        nav {
+            background-color: #1a1a1a;
+            color: #fff;
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        nav .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #ff4757;
+        }
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        nav ul li {
+            margin-left: 20px;
+        }
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+        nav ul li a:hover {
+            color: #ff4757;
+        }
+
+        /* Welcome Slider (Images coming from side) */
+        .slider-container {
+            width: 100%;
+            height: 400px;
+            overflow: hidden;
+            position: relative;
+            background-color: #000;
+        }
+        .slider {
+            display: flex;
+            width: 400%; 
+            height: 100%;
+            animation: slideAnimation 16s infinite;
+        }
+        .slide {
+            width: 25%;
+            height: 100%;
+            position: relative;
+        }
+        .slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.7;
+        }
+        .welcome-text {
+            position: absolute;
+            top: 50%;
+            left: 10%;
+            transform: translateY(-50%);
+            color: white;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
+            z-index: 10;
+        }
+        .welcome-text h1 {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+        .welcome-text p {
+            font-size: 18px;
+        }
+
+        /* Slide Animation (ডান থেকে বামে আসার জন্য) */
+        @keyframes slideAnimation {
+            0% { transform: translateX(0); }
+            20% { transform: translateX(0); }
+            25% { transform: translateX(-25%); }
+            45% { transform: translateX(-25%); }
+            50% { transform: translateX(-50%); }
+            70% { transform: translateX(-50%); }
+            75% { transform: translateX(-75%); }
+            95% { transform: translateX(-75%); }
+            100% { transform: translateX(0); }
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 15px;
+        }
+        .section-title {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 28px;
+            position: relative;
+        }
+        .section-title::after {
+            content: '';
+            width: 80px;
+            height: 4px;
+            background-color: #ff4757;
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        /* Product Grid (Responsive Grid) */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+        .product-card {
+            background: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        .product-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background-color: #eee;
+        }
+        .product-info {
+            padding: 12px;
+            text-align: center;
+        }
+        .product-title {
+            font-size: 16px;
+            margin-bottom: 8px;
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .product-price {
+            color: #ff4757;
+            font-size: 15px;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+        .buy-btn {
+            background-color: #ff4757;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            width: 100%;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.3s;
+            font-size: 14px;
+        }
+        .buy-btn:hover {
+            background-color: #e84118;
+        }
+
+        /* Corner Social Icons (Facebook & WhatsApp) */
+        .social-sticky {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            z-index: 9999;
+        }
+        .social-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 24px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            text-decoration: none;
+            transition: transform 0.3s;
+        }
+        .social-icon:hover {
+            transform: scale(1.1);
+        }
+        .facebook { background-color: #1877F2; }
+        .whatsapp { background-color: #25D366; }
+
+        /* Footer */
+        footer {
+            background-color: #1a1a1a;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 50px;
+        }
+
+        /* Mobile Responsive Area (মোবাইলে ২টা করে দেখানোর জন্য ম্যাজিক কোড) */
+        @media (max-width: 576px) {
+            .product-grid {
+                grid-template-columns: repeat(2, 1fr); /* এক লাইনে ২টা কলাম */
+                gap: 10px; /* মোবাইলে স্পেস একটু কমিয়ে দেওয়া হয়েছে */
+            }
+            .product-img {
+                height: 140px; /* মোবাইলে ছবির সাইজ পারফেক্ট রাখার জন্য */
+            }
+            .welcome-text h1 {
+                font-size: 24px;
+            }
+            .welcome-text p {
+                font-size: 14px;
+            }
+            .slider-container {
+                height: 250px; /* মোবাইলে স্লাইডারের উচ্চতা সামঞ্জস্য করা হয়েছে */
+            }
+            .product-info {
+                padding: 8px;
+            }
+            .product-title {
+                font-size: 14px;
+            }
+            .product-price {
+                font-size: 13px;
+            }
+            .buy-btn {
+                font-size: 12px;
+                padding: 6px 10px;
+            }
+        }
+    </style>
 </head>
 <body>
 
-  <header>
-    <h1> Anzum Organic food</h1>
-    <p>Best Products at Affordable Price</p>
-  </header>
+    <!-- Navigation Bar -->
+    <nav>
+        <div class="logo"> Anjum Organic Food</div>
+        <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Products</a></li>
+        </ul>
+    </nav>
 
-  <nav>
-    <a href="#">Home</a>
-    <a href="#">Products</a>
-    <a href="#">About Us</a>
-    <a href="#">Contact</a>
-  </nav>
-
-  <section class="hero">
-    <h1>Welcome to Our Store</h1>
-    <p>Find the best products here!</p>
-    <a href="#products" class="btn">Shop Now</a>
-  </section>
-
-  <section id="products" class="products">
-    <div class="product-card">
-      <img src="https://picsum.photos/250/200?1" alt="Product 1">
-      <h3>Product One</h3>
-      <p>$25.00</p>
-      <a href="#" class="btn">Buy Now</a>
+    <!-- Welcome Slider -->
+    <div class="slider-container">
+        <div class="welcome-text">
+            <h1>আমাদের শপে স্বাগতম!</h1>
+            <p>সেরা দামে সেরা পণ্য কিনতে আজই অর্ডার করুন।</p>
+        </div>
+        <div class="slider">
+            <div class="slide"><img src="https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?auto=format&fit=crop&w=1200&q=80" alt="Welcome 1"></div>
+            <div class="slide"><img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=1200&q=80" alt="Welcome 2"></div>
+            <div class="slide"><img src="https://images.unsplash.com/photo-1472851294608-062f824d29cc?auto=format&fit=crop&w=1200&q=80" alt="Welcome 3"></div>
+            <div class="slide"><img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=1200&q=80" alt="Welcome 4"></div>
+        </div>
     </div>
-    <div class="product-card">
-      <img src="IMG_8562.jpg" alt="Product 2">
-      <h3>Product Two</h3>
-      <p>$35.00</p>
-      <a href="#" class="btn">Buy Now</a>
-    </div>
-    <div class="product-card">
-      <img src="https://picsum.photos/250/200?3" alt="Product 3">
-      <h3>Product Three</h3>
-      <p>$45.00</p>
-      <a href="#" class="btn">Buy Now</a>
-    </div>
-  </section>
 
-  <footer>
-    <p>© 2026 My Product Store | All Rights Reserved</p>
-  </footer>
+    <!-- Main Products Section -->
+    <div class="container">
+        <h2 class="section-title">আমাদের বিশেষ কালেকশন</h2>
+        
+        <div class="product-grid">
+            
+            <!-- Item 1 -->
+            <div class="product-card">
+                <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=400&q=80" alt="Product" class="product-img">
+                <div class="product-info">
+                    <div class="product-title">Wireless Headphones</div>
+                    <div class="product-price">৳ ২,৫০০</div>
+                    <button class="buy-btn">Buy Now</button>
+                </div>
+            </div>
+
+            <!-- Item 2 -->
+            <div class="product-card">
+                <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=400&q=80" alt="Product" class="product-img">
+                <div class="product-info">
+                    <div class="product-title">Smart Watch Pro</div>
+                    <div class="product-price">৳ ৩,২০০</div>
+                    <button class="buy-btn">Buy Now</button>
+                </div>
+            </div>
+
+            <!-- Item 3 -->
+            <div class="product-card">
+                <img src="https://images.unsplash.com/photo-1583394838336-acd977736f90?auto=format&fit=crop&w=400&q=80" alt="Product" class="product-img">
+                <div class="product-info">
+                    <div class="product-title">Gaming Headset</div>
+                    <div class="product-price">৳ ১,৮০০</div>
+                    <button class="buy-btn">Buy Now</button>
+                </div>
+            </div>
+
+            <!-- Item 4 -->
+            <div class="product-card">
+                <img src="https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&w=400&q=80" alt="Product" class="product-img">
+                <div class="product-info">
+                    <div class="product-title">Premium Sunglasses</div>
+                    <div class="product-price">৳ ১,২০০০</div>
+                    <button class="buy-btn">Buy Now</button>
+                </div>
+            </div>
+
+            <!-- Item 5 -->
+            <div class="product-card">
+                <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=400&q=80" alt="Product" class="product-img">
+                <div class="product-info">
+                    <div class="product-title">Sports Sneakers</div>
+                    <div class="product-price">৳ ৪,৫০০</div>
+                    <button class="buy-btn">Buy Now</button>
+                </div>
+            </div>
+
+            <!-- Item 6 -->
+            <div class="product-card">
+                <img src="https://images.unsplash.com/photo-1560343090-f0409e92791a?auto=format&fit=crop&w=400&q=80" alt="Product" class="product-img">
+                <div class="product-info">
+                    <div class="product-title">Formal Leather Shoes</div>
+                    <div class="product-price">৳ ৩,৮০০</div>
+                    <button class="buy-btn">Buy Now</button>
+                </div>
+            </div>
+
+            <!-- Item 7 -->
+            <div class="product-card">
+                <img src="https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&w=400&q=80" alt="Product" class="product-img">
+                <div class="product-info">
+                    <div class="product-title">Instant Film Camera</div>
+                    <div class="product-price">৳ ৮,৫০০</div>
+                    <button class="buy-btn">Buy Now</button>
+                </div>
+            </div>
+
+            <!-- Item 8 -->
+            <div class="product-card">
+                <img src="https://images.unsplash.com/photo-1585386959984-a4155224a1ad?auto=format&fit=crop&w=400&q=80" alt="Product" class="product-img">
+                <div class="product-info">
+                    <div class="product-title">Luxury Perfume</div>
+                    <div class="product-price">৳ ৫,০০০</div>
+                    <button class="buy-btn">Buy Now</button>
+                </div>
+            </div>
+
+            <!-- Item 9 -->
+            <div class="product-card">
+                <img src="https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=400&q=80" alt="Product" class="product-img">
+                <div class="product-info">
+                    <div class="product-title">Classic Leather Wallet</div>
+                    <div class="product-price">৳ ৯৫০</div>
+                    <button class="buy-btn">Buy Now</button>
+                </div>
+            </div>
+
+            <!-- Item 10 -->
+            <div class="product-card">
+                <img src="https://images.unsplash.com/photo-1546868871-7041f2a55e12?auto=format&fit=crop&w=400&q=80" alt="Product" class="product-img">
+                <div class="product-info">
+                    <div class="product-title">Fitness Smart Band</div>
+                    <div class="product-price">৳ ১,৯৯৯</div>
+                    <button class="buy-btn">Buy Now</button>
+                </div>
+            </div>
+
+            <!-- Item 11 -->
+            <div class="product-card">
+                <img src="https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?auto=format&fit=crop&w=400&q=80" alt="Product" class="product-img">
+                <div class="product-info">
+                    <div class="product-title">Bluetooth Speaker</div>
+                    <div class="product-price">৳ ২,৮০০</div>
+                    <button class="buy-btn">Buy Now</button>
+                </div>
+            </div>
+
+            <!-- Item 12 -->
+            <div class="product-card">
+                <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=400&q=80" alt="Product" class="product-img">
+                <div class="product-info">
+                    <div class="product-title">Mechanical Keyboard</div>
+                    <div class="product-price">৳ ৩,৫০০</div>
+                    <button class="buy-btn">Buy Now</button>
+                </div>
+            </div>
+
+            <!-- Item 13 -->
+            <div class="product-card">
+                <img src="https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?auto=format&fit=crop&w=400&q=80" alt="Product" class="product-img">
+                <div class="product-info">
+                    <div class="product-title">Gaming Mouse</div>
+                    <div class="product-price">৳ ১,৪৫০</div>
+                    <button class="buy-btn">Buy Now</button>
+                </div>
+            </div>
+
+            <!-- Item 14 -->
+            <div class="product-card">
+                <img src="https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?auto=format&fit=crop&w=400&q=80" alt="Product" class="product-img">
+                <div class="product-info">
+                    <div class="product-title">Minimalist Backpack</div>
+                    <div class="product-price">৳ ২,২০০</div>
+                    <button class="buy-btn">Buy Now</button>
+                </div>
+            </div>
+
+            <!-- Item 15 -->
+            <div class="product-card">
+                <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=400&q=80" alt="Product" class="product-img">
+                <div class="product-info">
+                    <div class="product-title">Smartphone Vlog Kit</div>
+                    <div class="product-price">৳ ৪,৮০০</div>
+                    <button class="buy-btn">Buy Now</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Floating Social Media Icons -->
+    <div class="social-sticky">
+        <a href="https://facebook.com" target="_blank" class="social-icon facebook" title="Facebook">
+            <i class="fab fa-facebook-f"></i>
+        </a>
+        <a href="https://wa.me/8801647516544" target="_blank" class="social-icon whatsapp" title="WhatsApp">
+            <i class="fab fa-whatsapp"></i>
+        </a>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 EpicShop. All Rights Reserved.</p>
+    </footer>
 
 </body>
 </html>
