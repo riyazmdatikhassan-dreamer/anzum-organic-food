@@ -531,51 +531,31 @@
 
         </div>
     </div>
-
-    <!-- Order Form Modal (পপ-আপ ফর্ম) HTML -->
-    <div class="modal-overlay" id="orderModal">
-        <div class="modal-box">
-            <span class="close-modal" onclick="closeOrderForm()">&times;</span>
-            <h3>অর্ডার ফর্মটি পূরণ করুন</h3>
-            
-            <form action="https://api.web3forms.com/submit" method="POST">
-                <!-- আপনার আসল Web3Forms Access Key এখানে সঠিকভাবে দেওয়া হয়েছে -->
-                <input type="hidden" name="access_key" value="cd5a658c-50c1-4b6c-8a14-0c848af1449f">
-                <input type="hidden" name="redirect" value="https://web3forms.com/success">
-
-                <div class="form-group">
-                    <label>নির্বাচিত প্রোডাক্ট:</label>
-                    <input type="text" id="formProduct" name="Product_Name" readonly>
-                </div>
-
-                <div class="form-group">
-                    <label>মূল্য:</label>
-                    <input type="text" id="formPrice" name="Product_Price" readonly>
-                </div>
-                <div class="form-group">
-    <label>কত কেজি / পিস কিনতে চান?:</label>
-    <input type="text" name="Product_Quantity" placeholder="যেমন: ২ কেজি অথবা ৫ পিস" required>
+<!-- নির্বাচিত প্রোডাক্ট ও মূল মূল্য (আগের মতোই থাকবে) -->
+<div class="form-group">
+    <label>নির্বাচিত প্রোডাক্ট:</label>
+    <input type="text" id="formProduct" name="Product_Name" readonly>
 </div>
 
-                <div class="form-group">
-                    <label>আপনার নাম:</label>
-                    <input type="text" name="Customer_Name" placeholder="আপনার পুরো নাম লিখুন" required>
-                </div>
+<!-- প্রতি কেজির আসল দাম ট্র্যাক রাখার জন্য একটি হিডেন ফিল্ড -->
+<input type="hidden" id="basePrice">
 
-                <div class="form-group">
-                    <label>মোবাইল নম্বর:</label>
-                    <input type="tel" name="Customer_Phone" placeholder="আপনার সচল মোবাইল নম্বর দিন" required>
-                </div>
+<div class="form-group">
+    <label>একক মূল্য (১ কেজি / পিস):</label>
+    <input type="text" id="formPrice" name="Single_Price" readonly>
+</div>
 
-                <div class="form-group">
-                    <label>পূর্ণাঙ্গ ঠিকানা:</label>
-                    <textarea name="Customer_Address" rows="3" placeholder="জেলা, থানা, গ্রাম/রোড নম্বর লিখুন" required></textarea>
-                </div>
+<!-- নতুন পরিমাণের ঘর (সংখ্যা দেওয়ার জন্য) -->
+<div class="form-group">
+    <label>পরিমাণ (কেজি / পিস):</label>
+    <input type="number" id="formQuantity" name="Product_Quantity" value="1" min="1" oninput="calculateTotal()" required>
+</div>
 
-                <button type="submit" class="submit-btn">অর্ডার নিশ্চিত করুন</button>
-            </form>
-        </div>
-    </div>
+<!-- স্বয়ংক্রিয় মোট মূল্যের ঘর -->
+<div class="form-group">
+    <label>সর্বমোট মূল্য:</label>
+    <input type="text" id="formTotal" name="Total_Price" readonly>
+</div>
 
     <!-- Floating Social Media Icons -->
     <div class="social-sticky">
@@ -591,14 +571,56 @@
     <footer>
         <p>&copy; 2026 anjum organic food. All Rights Reserved.</p>
     </footer>
-
-    <!-- -------------------------- JavaScript ফাংশনালিটি -------------------------- -->
+<!-- -------------------------- JavaScript ফাংশনালিটি -------------------------- -->
     <script>
+        // বাংলা সংখ্যাকে ইংরেজিতে রূপান্তর করার ফাংশন
+        function banglaToEnglish(str) {
+            const banglaDigits = {'০':'0','১':'1','২':'2','৩':'3','৪':'4','৫':'5','৬':'6','৭':'7','৮':'8','৯':'9'};
+            return str.replace(/[০-৯]/g, match => banglaDigits[match]);
+        }
+
+        // ইংরেজি সংখ্যাকে আবার বাংলায় রূপান্তর করার ফাংশন
+        function englishToBangla(str) {
+            const englishDigits = {'0':'০','1':'১','2':'২','3':'৩','4':'৪','5':'৫','6':'৬','7':'৭','8':'৮','9':'৯'};
+            return str.toString().replace(/[0-9]/g, match => englishDigits[match]);
+        }
+
         // ফর্ম ওপেন করার ফাংশন
         function openOrderForm(productName, productPrice) {
             document.getElementById("formProduct").value = productName;
             document.getElementById("formPrice").value = productPrice;
+            
+            // দাম থেকে শুধু সংখ্যা আলাদা করা (যেমন: '৳ ৫৬০' থেকে '৫৬০')
+            let cleanPrice = productPrice.replace(/[^\u09E6-\u09EF0-9]/g, '');
+            let englishPrice = parseInt(banglaToEnglish(cleanPrice)) || 0;
+            
+            // আসল দামটি লুকিয়ে সেভ করে রাখা
+            document.getElementById("basePrice").value = englishPrice;
+            
+            // শুরুতে পরিমাণ ১ পিস করে দেওয়া
+            document.getElementById("formQuantity").value = 1;
+            
+            // প্রথমবার মোট দাম সেট করা
+            calculateTotal();
+            
             document.getElementById("orderModal").classList.add("active");
+        }
+
+        // স্বয়ংক্রিয় গুণ বা হিসাব করার ফাংশন
+        function calculateTotal() {
+            let basePrice = parseInt(document.getElementById("basePrice").value) || 0;
+            let quantity = parseInt(document.getElementById("formQuantity").value) || 1;
+            
+            if(quantity < 1) {
+                quantity = 1;
+                document.getElementById("formQuantity").value = 1;
+            }
+            
+            // গুণ করা (দাম × পরিমাণ)
+            let total = basePrice * quantity;
+            
+            // ফরমেট করে বাংলায় দেখানো (যেমন: ৳ ১১২০)
+            document.getElementById("formTotal").value = "৳ " + englishToBangla(total);
         }
 
         // ফর্ম বন্ধ করার ফাংশন
@@ -606,7 +628,7 @@
             document.getElementById("orderModal").classList.remove("active");
         }
 
-        // ফর্মের বাইরে ক্লিক করলে যেন পপ-আপ বন্ধ হয়ে যায়
+        // ফর্মের বাইরে ক্লিক করলে বন্ধ হওয়া
         window.onclick = function(event) {
             let modal = document.getElementById("orderModal");
             if (event.target == modal) {
@@ -614,6 +636,11 @@
             }
         }
     </script>
+
+</body>
+</html>
+
+```
 
 </body>
 </html>
