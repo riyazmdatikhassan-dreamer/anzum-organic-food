@@ -94,7 +94,7 @@
             font-size: 18px;
         }
 
-        /* Slide Animation (ডান থেকে বামে আসার জন্য) */
+        /* Slide Animation */
         @keyframes slideAnimation {
             0% { transform: translateX(0); }
             20% { transform: translateX(0); }
@@ -228,14 +228,100 @@
             margin-top: 50px;
         }
 
-        /* Mobile Responsive Area (মোবাইলে ২টা করে দেখানোর জন্য ম্যাজিক কোড) */
+        /* Order Modal (পপ-আপ ফর্ম) CSS */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            opacity: 0;
+            pointer-events: none;
+            transition: 0.3s ease;
+        }
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .modal-box {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 450px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            position: relative;
+            transform: scale(0.8);
+            transition: 0.3s ease;
+        }
+        .modal-overlay.active .modal-box {
+            transform: scale(1);
+        }
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 22px;
+            cursor: pointer;
+            color: #666;
+        }
+        .modal-box h3 {
+            margin-bottom: 20px;
+            color: #1a1a1a;
+            border-bottom: 2px solid #ff4757;
+            padding-bottom: 8px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        .form-group input[readonly] {
+            background-color: #f1f2f6;
+            color: #555;
+            font-weight: bold;
+        }
+        .submit-btn {
+            background-color: #2ed573;
+            color: white;
+            border: none;
+            padding: 12px;
+            width: 100%;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .submit-btn:hover {
+            background-color: #26af5f;
+        }
+
+        /* Mobile Responsive Area */
         @media (max-width: 576px) {
             .product-grid {
-                grid-template-columns: repeat(2, 1fr); /* এক লাইনে ২টা কলাম */
-                gap: 10px; /* মোবাইলে স্পেস একটু কমিয়ে দেওয়া হয়েছে */
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
             }
             .product-img {
-                height: 140px; /* মোবাইলে ছবির সাইজ পারফেক্ট রাখার জন্য */
+                height: 140px;
             }
             .welcome-text h1 {
                 font-size: 24px;
@@ -244,7 +330,7 @@
                 font-size: 14px;
             }
             .slider-container {
-                height: 250px; /* মোবাইলে স্লাইডারের উচ্চতা সামঞ্জস্য করা হয়েছে */
+                height: 250px;
             }
             .product-info {
                 padding: 8px;
@@ -266,7 +352,7 @@
 
     <!-- Navigation Bar -->
     <nav>
-        <div class="logo"> Anjum Organic Food</div>
+        <div class="logo">Anjum Organic Food</div>
         <ul>
             <li><a href="#">Home</a></li>
             <li><a href="#">Products</a></li>
@@ -307,7 +393,7 @@
             <div class="product-card">
                 <img src="kath.jpeg" alt="Product" class="product-img">
                 <div class="product-info">
-                    <div class="product-title"> কাঠ বাদাম ৫০০ গ্রাম</div>
+                    <div class="product-title">কাঠ বাদাম ৫০০ গ্রাম</div>
                     <div class="product-price"> ৳ ৫৬০</div>
                      <button class="buy-btn" onclick="openOrderForm('কাঠ বাদাম', '৳ ৫৬০')">অর্ডার করুন</button>
                 </div>
@@ -329,7 +415,7 @@
                 <div class="product-info">
                     <div class="product-title">শরিষার তৈল</div>
                     <div class="product-price">৳ ১,২০০০</div>
-                    <button class="buy-btn" onclick="openOrderForm('শরিষার তৈল', '৳ ১২০০')">অর্ডার করুন</button>>
+                    <button class="buy-btn" onclick="openOrderForm('শরিষার তৈল', '৳ ১২০০')">অর্ডার করুন</button>
                 </div>
             </div>
 
@@ -347,9 +433,9 @@
             <div class="product-card">
                 <img src="lengra.jpeg" alt="Product" class="product-img">
                 <div class="product-info">
-                    <div class="product-title">লেংড়া আম</div>
+                    <div class="product-title">লেংড়া আম</div>
                     <div class="product-price">৳ ১২০ </div>
-                     <button class="buy-btn" onclick="openOrderForm('লেংড়া আম', '৳ ১২০')">অর্ডার করুন</button>
+                     <button class="buy-btn" onclick="openOrderForm('লেংড়া আম', '৳ ১২০')">অর্ডার করুন</button>
                 </div>
             </div>
 
@@ -367,9 +453,9 @@
             <div class="product-card">
                 <img src="papaya.jpeg" alt="Product" class="product-img">
                 <div class="product-info">
-                    <div class="product-title">পাপায়া আম</div>
+                    <div class="product-title">পাপায়া আম</div>
                     <div class="product-price">৳ ২১০</div>
-                     <button class="buy-btn" onclick="openOrderForm('পাপায়া আম', '৳ ২১০')">অর্ডার করুন</button>
+                     <button class="buy-btn" onclick="openOrderForm('পাপায়া আম', '৳ ২১০')">অর্ডার করুন</button>
                 </div>
             </div>
 
@@ -387,7 +473,7 @@
             <div class="product-card">
                 <img src="mr.twiest.jpg" alt="Product" class="product-img">
                 <div class="product-info">
-                    <div class="product-title"> মিস্টার টুইস্ট</div>
+                    <div class="product-title">মিস্টার টুইস্ট</div>
                     <div class="product-price">৳ ২৫</div>
                     <button class="buy-btn" onclick="openOrderForm('মিস্টার টুইস্ট', '৳ ২৫')">অর্ডার করুন</button>
                 </div>
@@ -399,7 +485,6 @@
                 <div class="product-info">
                     <div class="product-title">স্পিড ক্যান</div>
                     <div class="product-price">৳ ৫০</div>
-                    
                     <button class="buy-btn" onclick="openOrderForm('স্পিড ক্যান', '৳৫০')">Buy Now</button>
                 </div>
             </div>
@@ -408,7 +493,7 @@
             <div class="product-card">
                 <img src="spritcan.jpg" alt="Product" class="product-img">
                 <div class="product-info">
-                    <div class="product-title"> স্প্রাইট ক্যান</div>
+                    <div class="product-title">স্প্রাইট ক্যান</div>
                     <div class="product-price">৳ ৫০</div>
                     <button class="buy-btn" onclick="openOrderForm('স্পাইট ক্যান', '৳৫০')">অর্ডার করুন</button>
                 </div>
@@ -446,21 +531,16 @@
 
         </div>
     </div>
-        <!-- --------------------------
-       Order Form Modal (পপ-আপ ফর্ম) HTML
-    -------------------------- */ -->
+
+    <!-- Order Form Modal (পপ-আপ ফর্ম) HTML -->
     <div class="modal-overlay" id="orderModal">
         <div class="modal-box">
             <span class="close-modal" onclick="closeOrderForm()">&times;</span>
             <h3>অর্ডার ফর্মটি পূরণ করুন</h3>
             
-            <!-- ইমেইল পাঠানোর জন্য অ্যাকশন সার্ভিস লিংক -->
             <form action="https://api.web3forms.com/submit" method="POST">
-                
-                <!-- ⚠️ আপনার Web3Forms Access Key এখানে বসাবেন -->
+                <!-- আপনার আসল Web3Forms Access Key এখানে সঠিকভাবে দেওয়া হয়েছে -->
                 <input type="hidden" name="access_key" value="cd5a658c-50c1-4b6c-8a14-0c848af1449f">
-                
-                <!-- ফর্ম সাবমিট হওয়ার পর কাস্টমার কোন পেজে যাবে (ঐচ্ছিক) -->
                 <input type="hidden" name="redirect" value="https://web3forms.com/success">
 
                 <div class="form-group">
@@ -507,9 +587,8 @@
     <footer>
         <p>&copy; 2026 anjum organic food. All Rights Reserved.</p>
     </footer>
-     <!-- --------------------------
-       JavaScript ফাংশনালিটি
-    -------------------------- */ -->
+
+    <!-- -------------------------- JavaScript ফাংশনালিটি -------------------------- -->
     <script>
         // ফর্ম ওপেন করার ফাংশন
         function openOrderForm(productName, productPrice) {
@@ -523,7 +602,7 @@
             document.getElementById("orderModal").classList.remove("active");
         }
 
-        // ফর্মের বাইরে ক্লিক করলে যেন পপ-আপ বন্ধ হয়ে যায়
+        // ফর্মের বাইরে ক্লিক করলে যেন পপ-আপ বন্ধ হয়ে যায়
         window.onclick = function(event) {
             let modal = document.getElementById("orderModal");
             if (event.target == modal) {
@@ -532,6 +611,6 @@
         }
     </script>
 
-
 </body>
 </html>
+
